@@ -1,8 +1,8 @@
-package com.proyectouts.adminong.repositories;
+package com.example.demo.Repositories;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.proyectouts.adminong.repositories.entities.CargaEntity;
+import com.example.demo.Entities.CargaEntity;
 
 public interface CargaRepository extends CrudRepository<CargaEntity, Long>{
     

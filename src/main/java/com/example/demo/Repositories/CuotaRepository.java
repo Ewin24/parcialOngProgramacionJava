@@ -1,11 +1,11 @@
-package com.proyectouts.adminong.repositories;
+package com.example.demo.Repositories;
 
 import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.proyectouts.adminong.repositories.entities.CuotaEntity;
-import com.proyectouts.adminong.repositories.entities.SocioEntity;
+import com.example.demo.Entities.CuotaEntity;
+import com.example.demo.Entities.SocioEntity;
 
 public interface CuotaRepository extends CrudRepository<CuotaEntity, Long>{
     List<CuotaEntity> findBySocio(SocioEntity socio);

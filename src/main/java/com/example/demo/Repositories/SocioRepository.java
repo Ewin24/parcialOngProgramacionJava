@@ -1,12 +1,12 @@
-package com.proyectouts.adminong.repositories;
+package com.example.demo.Repositories;
+
+import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-import com.proyectouts.adminong.repositories.entities.SedeEntity;
-import com.proyectouts.adminong.repositories.entities.SocioEntity;
-import java.util.List;
-
+import com.example.demo.Entities.SedeEntity;
+import com.example.demo.Entities.SocioEntity;
 
 public interface SocioRepository extends CrudRepository<SocioEntity, Long>{
 

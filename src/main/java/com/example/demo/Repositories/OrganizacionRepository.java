@@ -1,8 +1,8 @@
-package com.proyectouts.adminong.repositories;
+package com.example.demo.Repositories;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.proyectouts.adminong.repositories.entities.OrganizacionEntity;
+import com.example.demo.Entities.OrganizacionEntity;
 
 public interface OrganizacionRepository extends CrudRepository<OrganizacionEntity, Long>{
     
