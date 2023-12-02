@@ -85,5 +85,3 @@ INSERT INTO mision (id_voluntario, id_carga) VALUES (2, 5);
 INSERT INTO mision (id_voluntario, id_carga) VALUES (3, 2);
 INSERT INTO mision (id_voluntario, id_carga) VALUES (4, 5);
 INSERT INTO mision (id_voluntario, id_carga) VALUES (5, 2);
-
-
