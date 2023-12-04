@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.Configurations.*;
@@ -69,7 +70,6 @@ public class SocioServiceImpl implements SocioService {
             throw new IllegalArgumentException("El teléfono del socio no puede ser nulo o vacío");
         }
         SedeEntity sedeEntity = sedeRepository.findById(socioDTO.getSedeId()).orElse(null);
-        System.out.println("Sede es " + sedeEntity.getPais());
         socioEntity.setSede(sedeEntity);
         SocioEntity socioGuardado = socioRepository.save(socioEntity);
         cuotaDTO.setSocioId(socioGuardado.getId());
@@ -112,6 +112,47 @@ public class SocioServiceImpl implements SocioService {
                 }).collect(Collectors.toList());
         socioCuotaDTO.setSocios(sociosDTO);
         return socioCuotaDTO;
+    }
+
+    @Override
+    public SocioDTO findById(Long idSocio) {
+        SocioEntity socio = socioRepository.findById(idSocio).orElse(null);
+        if (socio != null) {
+            return socioDTOConverter.convertToDTO(socio);
+        }
+        return null;
+    }
+
+    @Override
+    public void deleteById(Long idSocio) {
+        socioRepository.deleteById(idSocio);
+    }
+
+    @Override
+    public SocioDTO updateById(SocioDTO socioDTO) {
+        try {
+            SocioEntity socioExistente = socioRepository.findById(socioDTO.getId())
+                    .orElseThrow(() -> new NotFoundException());
+            socioExistente.setDni(socioDTO.getDni() != null ? socioDTO.getDni() : socioExistente.getDni());
+            socioExistente
+                    .setNombres(socioDTO.getNombres() != null ? socioDTO.getNombres() : socioExistente.getNombres());
+            socioExistente.setApellidos(
+                    socioDTO.getApellidos() != null ? socioDTO.getApellidos() : socioExistente.getApellidos());
+            socioExistente.setEmail(socioDTO.getEmail() != null ? socioDTO.getEmail() : socioExistente.getEmail());
+            socioExistente.setTelefono(
+                    socioDTO.getTelefono() != null ? socioDTO.getTelefono() : socioExistente.getTelefono());
+
+            if (socioDTO.getSedeId() != null) {
+                SedeEntity sedeExistente = sedeRepository.findById(socioDTO.getSedeId())
+                        .orElseThrow(() -> new NotFoundException());
+                socioExistente.setSede(sedeExistente);
+            }
+            SocioEntity socioActualizado = socioRepository.save(socioExistente);
+            SocioDTO socioReturn = socioDTOConverter.convertToDTO(socioActualizado);
+            return socioReturn;
+        } catch (NotFoundException e) {
+        }
+        return null;
     }
 
 }

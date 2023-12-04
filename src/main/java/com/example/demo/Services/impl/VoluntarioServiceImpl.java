@@ -1,6 +1,5 @@
 package com.example.demo.Services.impl;
 
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ import com.example.demo.Services.VoluntarioService;
 import jakarta.transaction.Transactional;
 
 @Service
-public class VoluntarioServiceImpl implements VoluntarioService{
+public class VoluntarioServiceImpl implements VoluntarioService {
 
     @Autowired
     private VoluntarioRepository voluntarioRepository;
@@ -35,35 +34,36 @@ public class VoluntarioServiceImpl implements VoluntarioService{
         if (voluntarioEntity.getNombres() == null || voluntarioEntity.getNombres().isEmpty()) {
             throw new IllegalArgumentException("El nombre del socio no puede ser nulo o vacío");
         }
-        
+
         if (voluntarioEntity.getApellidos() == null || voluntarioEntity.getApellidos().isEmpty()) {
             throw new IllegalArgumentException("El apellido del socio no puede ser nulo o vacío");
         }
-        
+
         if (voluntarioEntity.getEmail() == null || voluntarioEntity.getEmail().isEmpty()) {
             throw new IllegalArgumentException("El email del socio no puede ser nulo o vacío");
         }
-        
+
         if (voluntarioEntity.getTelefono() == null || voluntarioEntity.getTelefono().isEmpty()) {
             throw new IllegalArgumentException("El teléfono del socio no puede ser nulo o vacío");
         }
 
-        if (voluntarioEntity.getDisponibilidad() == null 
-        || voluntarioEntity.getDisponibilidad().isEmpty() 
-        || (!voluntarioEntity.getDisponibilidad().equalsIgnoreCase("si")
-        && !voluntarioEntity.getDisponibilidad().equalsIgnoreCase("no"))) {
-            throw new IllegalArgumentException("Disponibilidad debe ser si o no: " + voluntarioEntity.getDisponibilidad());
+        if (voluntarioEntity.getDisponibilidad() == null
+                || voluntarioEntity.getDisponibilidad().isEmpty()
+                || (!voluntarioEntity.getDisponibilidad().equalsIgnoreCase("si")
+                        && !voluntarioEntity.getDisponibilidad().equalsIgnoreCase("no"))) {
+            throw new IllegalArgumentException(
+                    "Disponibilidad debe ser si o no: " + voluntarioEntity.getDisponibilidad());
         }
 
-        if (voluntarioEntity.getTipoVoluntario() == null 
-        || voluntarioEntity.getTipoVoluntario().isEmpty() 
-        || (!voluntarioEntity.getTipoVoluntario().equalsIgnoreCase("administrativo")
-        && !voluntarioEntity.getTipoVoluntario().equalsIgnoreCase("sanitario"))) {
+        if (voluntarioEntity.getTipoVoluntario() == null
+                || voluntarioEntity.getTipoVoluntario().isEmpty()
+                || (!voluntarioEntity.getTipoVoluntario().equalsIgnoreCase("administrativo")
+                        && !voluntarioEntity.getTipoVoluntario().equalsIgnoreCase("sanitario"))) {
             throw new IllegalArgumentException("Tipo Voluntario debe ser sanitario o administrativo");
         }
 
         SedeEntity sedeEntity = sedeRepository.findById(voluntarioDTO.getSedeId()).orElse(null);
-        if(sedeEntity == null){
+        if (sedeEntity == null) {
             throw new IllegalArgumentException("Sede no existente");
         }
 
@@ -74,7 +74,7 @@ public class VoluntarioServiceImpl implements VoluntarioService{
     @Override
     public List<VoluntarioDTO> findAll() {
         List<VoluntarioEntity> voluntarioEntities = (List<VoluntarioEntity>) voluntarioRepository.findAll();
-        return voluntarioEntities.stream().map(voluntario->voluntarioDTOConverter.convertToDTO(voluntario)).toList();
+        return voluntarioEntities.stream().map(voluntario -> voluntarioDTOConverter.convertToDTO(voluntario)).toList();
     }
 
     @Override
@@ -92,7 +92,7 @@ public class VoluntarioServiceImpl implements VoluntarioService{
     @Transactional
     public void deleteById(Long idVoluntario) {
         VoluntarioEntity voluntarioEntity = voluntarioRepository.findById(idVoluntario).orElse(null);
-        if(voluntarioEntity != null){
+        if (voluntarioEntity != null) {
             voluntarioRepository.deleteJefeWithSede(voluntarioEntity.getId());
             voluntarioRepository.deleteById(idVoluntario);
         }
@@ -101,34 +101,47 @@ public class VoluntarioServiceImpl implements VoluntarioService{
     @Override
     public VoluntarioDTO updateById(VoluntarioDTO voluntarioDTO) {
         try {
-            VoluntarioEntity voluntarioEntity = voluntarioRepository.findById(voluntarioDTO.getId()).orElseThrow(() -> new NotFoundException());
-            voluntarioEntity.setDni(voluntarioDTO.getDni() != null ? voluntarioDTO.getDni() : voluntarioEntity.getDni());
-            voluntarioEntity.setNombres(voluntarioDTO.getNombres() != null ? voluntarioDTO.getNombres() : voluntarioEntity.getNombres());
-            voluntarioEntity.setApellidos(voluntarioDTO.getApellidos() != null ? voluntarioDTO.getApellidos() : voluntarioEntity.getApellidos());
-            voluntarioEntity.setEmail(voluntarioDTO.getEmail() != null ? voluntarioDTO.getEmail() : voluntarioEntity.getEmail());
-            voluntarioEntity.setTelefono(voluntarioDTO.getTelefono() != null ? voluntarioDTO.getTelefono() : voluntarioEntity.getTelefono());
-            voluntarioEntity.setProfesion(voluntarioDTO.getProfesion() != null ? voluntarioDTO.getProfesion() : voluntarioEntity.getProfesion());
-            
-            if  (voluntarioDTO.getDisponibilidad() != null) {
-                if(!voluntarioDTO.getDisponibilidad().equalsIgnoreCase("si")
-                && !voluntarioDTO.getDisponibilidad().equalsIgnoreCase("no")){
-                    throw new IllegalArgumentException("Disponibilidad debe ser si o no: " + voluntarioDTO.getDisponibilidad());
-                }else{
-                    voluntarioEntity.setDisponibilidad(voluntarioDTO.getDisponibilidad() != null ? voluntarioDTO.getDisponibilidad() : voluntarioEntity.getDisponibilidad());
+            VoluntarioEntity voluntarioEntity = voluntarioRepository.findById(voluntarioDTO.getId())
+                    .orElseThrow(() -> new NotFoundException());
+            voluntarioEntity
+                    .setDni(voluntarioDTO.getDni() != null ? voluntarioDTO.getDni() : voluntarioEntity.getDni());
+            voluntarioEntity.setNombres(
+                    voluntarioDTO.getNombres() != null ? voluntarioDTO.getNombres() : voluntarioEntity.getNombres());
+            voluntarioEntity.setApellidos(voluntarioDTO.getApellidos() != null ? voluntarioDTO.getApellidos()
+                    : voluntarioEntity.getApellidos());
+            voluntarioEntity.setEmail(
+                    voluntarioDTO.getEmail() != null ? voluntarioDTO.getEmail() : voluntarioEntity.getEmail());
+            voluntarioEntity.setTelefono(
+                    voluntarioDTO.getTelefono() != null ? voluntarioDTO.getTelefono() : voluntarioEntity.getTelefono());
+            voluntarioEntity.setProfesion(voluntarioDTO.getProfesion() != null ? voluntarioDTO.getProfesion()
+                    : voluntarioEntity.getProfesion());
+
+            if (voluntarioDTO.getDisponibilidad() != null) {
+                if (!voluntarioDTO.getDisponibilidad().equalsIgnoreCase("si")
+                        && !voluntarioDTO.getDisponibilidad().equalsIgnoreCase("no")) {
+                    throw new IllegalArgumentException(
+                            "Disponibilidad debe ser si o no: " + voluntarioDTO.getDisponibilidad());
+                } else {
+                    voluntarioEntity.setDisponibilidad(
+                            voluntarioDTO.getDisponibilidad() != null ? voluntarioDTO.getDisponibilidad()
+                                    : voluntarioEntity.getDisponibilidad());
                 }
             }
 
             if (voluntarioDTO.getTipoVoluntario() != null) {
-                if(!voluntarioDTO.getTipoVoluntario().equalsIgnoreCase("administrativo")
-                    && !voluntarioDTO.getTipoVoluntario().equalsIgnoreCase("sanitario")){
+                if (!voluntarioDTO.getTipoVoluntario().equalsIgnoreCase("administrativo")
+                        && !voluntarioDTO.getTipoVoluntario().equalsIgnoreCase("sanitario")) {
                     throw new IllegalArgumentException("Tipo Voluntario debe ser sanitario o administrativo");
-                }else{
-                    voluntarioEntity.setTipoVoluntario(voluntarioDTO.getTipoVoluntario() != null ? voluntarioDTO.getTipoVoluntario() : voluntarioEntity.getTipoVoluntario());
+                } else {
+                    voluntarioEntity.setTipoVoluntario(
+                            voluntarioDTO.getTipoVoluntario() != null ? voluntarioDTO.getTipoVoluntario()
+                                    : voluntarioEntity.getTipoVoluntario());
                 }
             }
-            
-            if(voluntarioDTO.getSedeId() != null){
-                SedeEntity sedeExistente = sedeRepository.findById(voluntarioDTO.getSedeId()).orElseThrow(() -> new NotFoundException());
+
+            if (voluntarioDTO.getSedeId() != null) {
+                SedeEntity sedeExistente = sedeRepository.findById(voluntarioDTO.getSedeId())
+                        .orElseThrow(() -> new NotFoundException());
                 voluntarioEntity.setSede(sedeExistente);
             }
             VoluntarioEntity voluntarioActualizado = voluntarioRepository.save(voluntarioEntity);
@@ -143,8 +156,8 @@ public class VoluntarioServiceImpl implements VoluntarioService{
     public List<VoluntarioDTO> findVoluntarioBySede(Long idSede) {
         List<VoluntarioEntity> voluntarioEntities = voluntarioRepository.findByIdSede(idSede);
         List<VoluntarioDTO> voluntarioDTOs = voluntarioEntities.stream()
-        .map(voluntario -> voluntarioDTOConverter.convertToDTO(voluntario))
-        .toList();
+                .map(voluntario -> voluntarioDTOConverter.convertToDTO(voluntario))
+                .toList();
         return voluntarioDTOs;
     }
 
@@ -152,8 +165,8 @@ public class VoluntarioServiceImpl implements VoluntarioService{
     public List<VoluntarioDTO> findVoluntarioByProfesion(String profesion) {
         List<VoluntarioEntity> voluntarioEntities = voluntarioRepository.findByProfesion(profesion);
         List<VoluntarioDTO> voluntarioDTOs = voluntarioEntities.stream()
-        .map(voluntario -> voluntarioDTOConverter.convertToDTO(voluntario))
-        .toList();
+                .map(voluntario -> voluntarioDTOConverter.convertToDTO(voluntario))
+                .toList();
         return voluntarioDTOs;
     }
 }

@@ -1,6 +1,5 @@
 package com.example.demo.Services.impl;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -106,5 +105,10 @@ public class EnvioServiceImpl implements EnvioService {
             return envioDTORefugioSedeCarga;
         }
         return null;
+    }
+
+    @Override
+    public List<EnvioEntity> findAll() {
+        return (List<EnvioEntity>) envioRepository.findAll();
     }
 }

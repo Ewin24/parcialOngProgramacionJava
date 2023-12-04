@@ -3,7 +3,6 @@ package com.example.demo.Services;
 import java.util.List;
 
 import com.example.demo.Dtos.SedeDTO;
-import com.example.demo.Entities.SedeEntity;
 
 public interface SedeService {
 
@@ -13,8 +12,8 @@ public interface SedeService {
 
     void deleteById(Long idSede);
 
-    SedeEntity findById(Long id);
+    SedeDTO findById(Long id);
 
-    SedeEntity updateById(SedeDTO sedeDTO);
-    
+    SedeDTO updateById(SedeDTO sedeDTO);
+
 }

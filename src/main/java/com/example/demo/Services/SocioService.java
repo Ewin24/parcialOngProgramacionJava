@@ -15,4 +15,10 @@ public interface SocioService {
     List<SocioDTOBancoCuota> findAll();
 
     SocioCuotaDTO findSociosByCuota(String tipoCuota);
+
+    SocioDTO findById(Long idSocio);
+
+    void deleteById(Long idSocio);
+
+    SocioDTO updateById(SocioDTO socioDTO);
 }

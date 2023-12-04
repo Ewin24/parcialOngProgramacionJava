@@ -54,20 +54,31 @@ public class SedeServiceImpl implements SedeService {
         return sedeEntities.stream().map(sede -> sedeDTOConverter.convertToDTO(sede)).toList();
     }
 
-    public SedeEntity findById(Long id) {
-        return sedeRepository.findById(id).orElse(null);
+    @Override
+    public SedeDTO findById(Long id) {
+        SedeEntity sedeBuscada = sedeRepository.findById(id).orElse(null);
+        if (sedeBuscada != null) {
+            return sedeDTOConverter.convertToDTO(sedeBuscada);
+        }
+        return null;
     }
 
     @Override
     @Transactional
     public void deleteById(Long idSede) {
-        SedeEntity sede = sedeRepository.findById(idSede).orElseThrow();
-        sede.getEnvios().removeAll(sede.getEnvios());
-        sede.getSocios().removeAll(sede.getSocios());
-        sedeRepository.delete(sede);
+        SedeEntity sede = sedeRepository.findById(idSede).orElse(null);
+        if (sede != null) {
+            List<VoluntarioEntity> voluntarios = sede.getVoluntarios();
+            for (VoluntarioEntity voluntario : voluntarios) {
+                voluntario.setSede(null);
+            }
+            sedeRepository.deleteAllEnvios(sede.getId());
+            sedeRepository.deleteById(sede.getId());
+        }
     }
 
-    public SedeEntity updateById(SedeDTO sedeDTO) {
+    @Override
+    public SedeDTO updateById(SedeDTO sedeDTO) {
         try {
             SedeEntity sedeExistente = sedeRepository.findById(sedeDTO.getId())
                     .orElseThrow(() -> new NotFoundException());
@@ -86,11 +97,11 @@ public class SedeServiceImpl implements SedeService {
                         .orElseThrow(() -> new NotFoundException());
                 sedeExistente.setVoluntarioJefe(nuevoVoluntarioJefe);
             }
-
-            return sedeRepository.save(sedeExistente);
+            SedeEntity sedeActualizada = sedeRepository.save(sedeExistente);
+            SedeDTO sedeReturn = sedeDTOConverter.convertToDTO(sedeActualizada);
+            return sedeReturn;
         } catch (Exception e) {
         }
         return null;
     }
-
 }

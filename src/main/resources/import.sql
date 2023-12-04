@@ -1,12 +1,12 @@
 -- Insertar datos para la tabla 'organizacion'
-INSERT INTO organizacion (nombre) VALUES ('Tellus Industries');
-INSERT INTO organizacion (nombre) VALUES ('Morbi Tristique Industries');
+INSERT INTO organizacion (nombre) VALUES ('stark Industries');
+INSERT INTO organizacion (nombre) VALUES ('azucar manuelita');
 INSERT INTO organizacion (nombre) VALUES ('Laoreet Posuere Industries');
 INSERT INTO organizacion (nombre) VALUES ('Ultricies Sem Magna Ltd');
 INSERT INTO organizacion (nombre) VALUES ('Erat Corp.');
 
 -- Insertar datos para la tabla 'sede'
-INSERT INTO sede (id_voluntario_jefe, ciudad, pais, id_organizacion) VALUES (NULL, 'Osnabruck', 'Belgium', 2);
+INSERT INTO sede (id_voluntario_jefe, ciudad, pais, id_organizacion) VALUES (NULL, 'Bucaramnga', 'Colombia', 2);
 INSERT INTO sede (id_voluntario_jefe, ciudad, pais, id_organizacion)     VALUES (NULL, 'San Juan del Rio', 'Singapore', 3);
 INSERT INTO sede (id_voluntario_jefe, ciudad, pais, id_organizacion) VALUES (NULL, 'Jeju', 'India', 3);
 INSERT INTO sede (id_voluntario_jefe, ciudad, pais, id_organizacion) VALUES (NULL, 'Mérida', 'Vietnam', 4);
